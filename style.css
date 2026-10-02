@@ -1,0 +1,101 @@
+/* ---------- Colors in one place (easy to change) ---------- */
+:root {
+  --bg: #0f172a;          /* page background (dark navy) */
+  --panel: #1e293b;       /* game container */
+  --cell: #334155;        /* empty cell */
+  --cell-hover: #475569;  /* cell on hover */
+  --text: #f1f5f9;
+  --muted: #cbd5e1;
+  --x-color: #38bdf8;     /* X = light blue */
+  --o-color: #fbbf24;     /* O = amber */
+  --win: #22c55e;         /* winning cells = green */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  padding: 16px;
+}
+
+/* ---------- Centered game container ---------- */
+.game {
+  width: 100%;
+  max-width: 420px;
+  background: var(--panel);
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.activity { margin: 0; font-size: 0.9rem; color: var(--muted); }
+h1 { margin: 4px 0 16px; font-size: 2rem; }
+.status { font-size: 1.15rem; font-weight: 600; min-height: 1.6em; margin: 0 0 16px; }
+
+/* ---------- Board: 3x3 grid ---------- */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.cell {
+  aspect-ratio: 1 / 1;           /* keeps every cell square */
+  font-size: clamp(2.5rem, 14vw, 4rem);
+  font-weight: 700;
+  background: var(--cell);
+  color: var(--text);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.cell:hover:not([aria-disabled="true"]) { background: var(--cell-hover); transform: translateY(-2px); }
+.cell[aria-disabled="true"] { cursor: not-allowed; }
+.cell.x { color: var(--x-color); }
+.cell.o { color: var(--o-color); }
+
+/* ---------- Winning cells: green + pulse animation ---------- */
+.cell.win {
+  background: var(--win);
+  color: #052e16;
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+@keyframes pulse {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+
+/* ---------- Restart button ---------- */
+.restart {
+  margin-top: 20px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: var(--x-color);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.restart:hover { background: #7dd3fc; transform: translateY(-2px); }
+
+/* Visible outline for keyboard users */
+button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+footer { margin-top: 20px; font-size: 0.85rem; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cell.win { animation: none; }
+}
